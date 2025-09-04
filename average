@@ -1,0 +1,19 @@
+	import pandas as pd
+	import matplotlib.pyplot as plt
+	
+	plt.style.use("bmh")
+	df = pd.read_csv("annual-co-emissions-by-region.csv")
+	
+	countries = ["China", "United States", "Africa", "India"]
+	
+	avg_per_country = df[df["Entity"].isin(countries)].groupby("Entity")["Annual CO₂ emissions"].mean()
+	avg_per_country_Mt = avg_per_country / 1e9
+	
+	plt.figure(figsize=(10,6))
+	avg_per_country_Mt.plot(kind="bar")
+	
+	plt.ticklabel_format(style='plain', axis='y')  
+	plt.ylabel("Average Annual CO₂ emissions (Mt)")
+	plt.title("Average Annual CO₂ emissions by country")
+	plt.xticks(rotation=45)
+	plt.show()
