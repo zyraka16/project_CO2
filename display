@@ -1,0 +1,21 @@
+import pandas as pd 
+import matplotlib.pyplot as plt
+
+plt.style.use("bmh")
+df = pd.read_csv("annual-co-emissions-by-region.csv")
+
+print(df.columns)
+
+countries = ["China", "United States", "Africa", "India"]
+
+plt.figure(figsize=(12,6))
+
+for country in countries:
+    subset = df[df["Entity"] == country]
+    plt.plot(subset["Year"], subset["Annual CO₂ emissions"], label=country)
+
+plt.xlabel("Year", fontsize=18)
+plt.ylabel("Annual CO₂ emissions", fontsize=16)
+plt.title("Annual CO2 emissions by country", fontsize=20)
+plt.legend()
+plt.show()
