@@ -18,4 +18,5 @@ plt.xlabel("Year", fontsize=18)
 plt.ylabel("Annual CO₂ emissions", fontsize=16)
 plt.title("Annual CO2 emissions by country", fontsize=20)
 plt.legend()
+
 plt.show()
