@@ -1,0 +1,15 @@
+# Compute variations of variations 
+df_country["Variation2"] = df_country["Variation"].diff()
+
+# Print in the terminal
+print(f"\nVariations of variations for {country} between {year1} and {year2} :")
+print(df_country[["Year", "Variation2"]].dropna().to_string(index=False))
+
+plt.figure(figsize=(12,6))
+plt.plot(df_country["Year"], df_country["Variation2"], color="purple")
+plt.axhline(0, color="black", linewidth=0.8, linestyle="--")
+plt.xlabel("Year")
+plt.ylabel("Variation of variations (Gt)")
+plt.title(f"Variations of variations of émissions for {country} ({year1} → {year2})")
+plt.grid(True)
+plt.show()
