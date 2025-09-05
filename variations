@@ -1,0 +1,48 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+
+df = pd.read_csv("annual-co-emissions-by-region.csv")
+
+country = "China"
+year1 = 1990
+year2 = 2000
+emission_col = "Annual CO₂ emissions"  
+
+# We filter the countries and years
+df_country = df[(df["Entity"] == country) &
+                (df["Year"] >= year1) &
+                (df["Year"] <= year2)].sort_values("Year")
+
+# We verify if the country has values at these dates
+if df_country.shape[0] < 2:
+    print("Not enough years to comput variations")
+else:
+    # Convertion in Gt
+    df_country[emission_col] = df_country[emission_col] / 1e9
+
+    # Compute the variation
+    df_country["Variation"] = df_country[emission_col].diff()
+
+    if year2 - year1 == 1:
+        variation = df_country["Variation"].iloc[1]
+        print(f"Variation des émissions de {country} entre {year1} et {year2} : {variation:.2f} Gt")
+
+        plt.figure(figsize=(6,6))
+        plt.bar(country, variation, color="green" if variation > 0 else "red")
+        plt.ylabel("Variation of CO₂ emissions (Gt) (Gt)")
+        plt.title(f"Variation of CO₂ emissions for {country} ({year1} → {year2})")
+        plt.show()
+
+    else:
+        plt.figure(figsize=(12,6))
+        plt.plot(df_country["Year"], df_country["Variation"], color="orange")
+        plt.axhline(0, color="black", linewidth=0.8, linestyle="--")
+        plt.xlabel("Année")
+        plt.ylabel("Variation of CO₂ emissions (Gt)")
+        plt.title(f"Variation of CO₂ emissions for {country} ({year1} → {year2})")
+        plt.grid(True)
+        plt.show()
+
+        # Print the variations in the terminal
+        print(f"Variations for {country} between {year1} and {year2} :")
+        print(df_country[["Year", "Variation"]].dropna().to_string(index=False))
